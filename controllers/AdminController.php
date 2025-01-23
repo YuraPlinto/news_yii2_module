@@ -121,7 +121,14 @@ class AdminController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        $fileWithPath = \Yii::getAlias('@webroot/images/' . $model->img_url);
+        if (file_exists($fileWithPath)) {
+            \unlink($fileWithPath);
+        }
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }
