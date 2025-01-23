@@ -3,6 +3,7 @@
 namespace app\modules\news\controllers;
 
 use app\modules\news\models\Article;
+use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -24,7 +25,8 @@ class AdminController extends Controller
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
-                        'delete' => ['POST'],
+                        'delete'      => ['POST'],
+                        'bulk-delete' => ['POST'],
                     ],
                 ],
             ]
@@ -129,6 +131,28 @@ class AdminController extends Controller
         }
 
         $model->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /*
+     * Deletes articles selected by checkboxes.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @return \yii\web\Response
+     */
+    public function actionBulkDelete() {
+        $select = Yii::$app->request->post('selection');
+
+        foreach($select as $id){
+            $model = Article::findOne((int)$id);
+
+            $fileWithPath = \Yii::getAlias('@webroot/images/' . $model->img_url);
+            if (file_exists($fileWithPath)) {
+                \unlink($fileWithPath);
+            }
+
+            $model->delete();
+        }
 
         return $this->redirect(['index']);
     }

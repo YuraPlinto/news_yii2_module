@@ -16,8 +16,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?=Html::beginForm(['bulk-delete'],'post');?>
     <p>
         <?= Html::a('Create Article', ['create'], ['class' => 'btn btn-success']) ?>
+        <?=Html::submitButton('Delete selected', ['class' => 'btn btn-danger', 'id' => 'delete-selected'])?>
     </p>
 
 
@@ -60,6 +62,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'     => 'Дата изменения'
             ],
             [
+                'class'           => \yii\grid\CheckboxColumn::className(),
+                'checkboxOptions' => function ($data) {
+                    return ['value' => $data->id];
+                }
+            ],
+            [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Article $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
@@ -67,6 +75,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ],
     ]); ?>
-
+    <?= Html::endForm();?> 
 
 </div>
