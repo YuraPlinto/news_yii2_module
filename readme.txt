@@ -34,8 +34,12 @@
 
 5) Там же в конфигурации приложения нужно задать правила разбора URL для модуля. Для этого в
 'urlManager'['rules'] нужно добавить:
-'news'               => 'news/default/index', 
-'news/view/<id:\d+>' => 'news/default/view'
+'news'                       => 'news/default/index', 
+'news/view/<id:\d+>'         => 'news/default/view',
+'news/admin'                 => 'news/admin/index',
+'news/admin/view/<id:\d+>'   => 'news/admin/view',
+'news/admin/update/<id:\d+>' => 'news/admin/update',
+'news/admin/delete/<id:\d+>' => 'news/admin/delete',
 
 6) Создание таблиц в БД.
 Если нужные для работы модуля таблицы не были созданы sql-запросами на шаге 2, то их можно создать с 
